@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Notas Ingeniería</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; margin: 2rem; background: #f4f6f9; color: #222; }
+  h1 { color: #003366; text-align: center; margin-bottom: 25px; }
+  h2 { color: #003366; border-left: 5px solid #003366; padding-left: 8px; margin-bottom: 10px; }
+  .materia { background: #fff; padding: 20px; margin-bottom: 25px; border-radius: 10px; box-shadow: 0 3px 7px rgba(0,0,0,0.1); }
+  label { display: block; margin-top: 8px; font-weight: 500; }
+  input { width: 100%; padding: 6px; margin-top: 3px; border: 1px solid #ccc; border-radius: 5px; }
+  input.small { width: 60px; display: inline-block; margin: 3px; text-align: center; }
+  .test-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  button { margin-top: 10px; padding: 8px 16px; background: #003366; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+  button:hover { background: #00509e; }
+  .resultado { margin-top: 12px; font-weight: bold; color: #003366; }
+</style>
+</head>
+<body>
+
+<h1>Calculadora de Notas de Ingeniería</h1>
+
+<div class="materia" id="termica">
+  <h2>Ingeniería Térmica</h2>
+  <label>10% Puntos en aula</label><input type="number" id="term_aula" step="0.01">
+  <label>10% Prácticas de laboratorio (Final)</label><input type="number" id="term_lab" step="0.01">
+  <label>10% Proyecto de laboratorio (6 tests: 2 TD, 2 Calor, 2 Otros)</label>
+  <div class="test-group">
+    <input class="small" type="number" id="term_t1" step="0.01">
+    <input class="small" type="number" id="term_t2" step="0.01">
+    <input class="small" type="number" id="term_t3" step="0.01">
+    <input class="small" type="number" id="term_t4" step="0.01">
+    <input class="small" type="number" id="term_t5" step="0.01">
+    <input class="small" type="number" id="term_t6" step="0.01">
+  </div>
+  <label>70% Examen Final (mínimo 35%)</label><input type="number" id="term_final" step="0.01">
+  <button onclick="calcTermica()">Calcular</button>
+  <div id="term_res" class="resultado"></div>
+</div>
+
+<div class="materia" id="calculo">
+  <h2>Ampliación de Cálculo</h2>
+  <label>15% Laboratorio (5 clases: 10%,10%,10%,10%,60%)</label>
+  <div class="test-group">
+    <input class="small" type="number" id="calc_lab1" step="0.01">
+    <input class="small" type="number" id="calc_lab2" step="0.01">
+    <input class="small" type="number" id="calc_lab3" step="0.01">
+    <input class="small" type="number" id="calc_lab4" step="0.01">
+    <input class="small" type="number" id="calc_lab5" step="0.01">
+  </div>
+  <label>15% Problemas en aula (6 problemas)</label>
+  <div class="test-group">
+    <input class="small" type="number" id="calc_a1" step="0.01">
+    <input class="small" type="number" id="calc_a2" step="0.01">
+    <input class="small" type="number" id="calc_a3" step="0.01">
+    <input class="small" type="number" id="calc_a4" step="0.01">
+    <input class="small" type="number" id="calc_a5" step="0.01">
+    <input class="small" type="number" id="calc_a6" step="0.01">
+  </div>
+  <label>70% Examen final (mínimo 4/10)</label><input type="number" id="calc_final" step="0.01">
+  <label>Examen parcial (puede sustituir 50% si ≥5/10)</label><input type="number" id="calc_parcial" step="0.01">
+  <button onclick="calcCalculo()">Calcular</button>
+  <div id="calc_res" class="resultado"></div>
+</div>
+
+<div class="materia" id="electricidad">
+  <h2>Tecnología Eléctrica</h2>
+  <label>15% Laboratorio</label><input type="number" id="elec_lab" step="0.01">
+  <label>40% Parcial</label><input type="number" id="elec_parcial" step="0.01">
+  <label>45% Examen Final (mínimo 50% global y ≥20% por ejercicio)</label><input type="number" id="elec_final" step="0.01">
+  <button onclick="calcElectricidad()">Calcular</button>
+  <div id="elec_res" class="resultado"></div>
+</div>
+
+<div class="materia" id="resistencia">
+  <h2>Resistencia de Materiales</h2>
+  <label>5% Laboratorio</label><input type="number" id="res_lab" step="0.01">
+  <label>Parciales (dos de 7.5%)</label>
+  <div class="test-group">
+    <input class="small" type="number" id="res_p1" step="0.01">
+    <input class="small" type="number" id="res_p2" step="0.01">
+  </div>
+  <label>80% Examen Final</label><input type="number" id="res_final" step="0.01">
+  <button onclick="calcResistencia()">Calcular</button>
+  <div id="res_res" class="resultado"></div>
+</div>
+
+<div class="materia" id="procesos">
+  <h2>Procesos de Fabricación</h2>
+  <label>10% Kahoot</label><input type="number" id="proc_kahoot" step="0.01">
+  <label>20% Laboratorio (3 partes: Kahoots 4%, Trabajo 12%, Defensa 4%)</label>
+  <div class="test-group">
+    <input class="small" type="number" id="proc_lab1" step="0.01" placeholder="Kahoots">
+    <input class="small" type="number" id="proc_lab2" step="0.01" placeholder="Trabajo">
+    <input class="small" type="number" id="proc_lab3" step="0.01" placeholder="Defensa">
+  </div>
+  <label>70% Examen Final (mínimo 25%)</label><input type="number" id="proc_final" step="0.01">
+  <button onclick="calcProcesos()">Calcular</button>
+  <div id="proc_res" class="resultado"></div>
+</div>
+
+<script>
+function guardar(id,val){localStorage.setItem(id,val);}
+function cargar(id){const v=localStorage.getItem(id);if(v!==null)document.getElementById(id).value=v;}
+function autoGuardar(){document.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',e=>guardar(e.target.id,e.target.value)));}
+function prom(arr){return arr.reduce((a,b)=>a+(+b||0),0)/arr.length;}
+
+function calcTermica(){
+  const a=+term_aula.value||0,l=+term_lab.value||0,f=+term_final.value||0;
+  const tests=prom([term_t1.value,term_t2.value,term_t3.value,term_t4.value,term_t5.value,term_t6.value]);
+  const nota=0.1*a+0.1*l+0.1*tests+0.7*f;
+  const msg=f<3.5?"⚠️ No alcanza la nota mínima (35%) en el examen final.":"";
+  term_res.textContent=`Nota Ingeniería Térmica: ${nota.toFixed(2)} ${msg}`;
+}
+
+function calcCalculo(){
+  const labs=[calc_lab1.value,calc_lab2.value,calc_lab3.value,calc_lab4.value,calc_lab5.value].map(n=>+n||0);
+  const ponderLab=labs[0]*0.1+labs[1]*0.1+labs[2]*0.1+labs[3]*0.1+labs[4]*0.6;
+  const aulas=[calc_a1.value,calc_a2.value,calc_a3.value,calc_a4.value,calc_a5.value,calc_a6.value].map(n=>+n||0);
+  const promAula=prom(aulas);
+  const f=+calc_final.value||0,p=+calc_parcial.value||0;
+  let nota=0.15*ponderLab+0.15*promAula+0.7*f;
+  if(p>=5)nota=Math.max(nota,p*0.5+nota*0.5);
+  const msg=f<4?"⚠️ Nota final insuficiente (mínimo 4/10).":"";
+  calc_res.textContent=`Nota Ampliación de Cálculo: ${nota.toFixed(2)} ${msg}`;
+}
+
+function calcElectricidad(){
+  const l=+elec_lab.value||0,p=+elec_parcial.value||0,f=+elec_final.value||0;
+  const ponderFinal=p>=5?0.45:0.85;
+  const nota=0.15*l+0.4*p+ponderFinal*f;
+  const msg=f<5?"⚠️ No alcanza la nota global mínima del examen final.":"";
+  elec_res.textContent=`Nota Tecnología Eléctrica: ${nota.toFixed(2)} ${msg}`;
+}
+
+function calcResistencia(){
+  const l=+res_lab.value||0,p1=+res_p1.value||0,p2=+res_p2.value||0,f=+res_final.value||0;
+  const nota=0.05*l+0.075*(p1+p2)+0.8*f;
+  res_res.textContent=`Nota Resistencia de Materiales: ${nota.toFixed(2)}`;
+}
+
+function calcProcesos(){
+  const k=+proc_kahoot.value||0,f=+proc_final.value||0;
+  const labs=[proc_lab1.value,proc_lab2.value,proc_lab3.value].map(n=>+n||0);
+  const labScore=labs[0]*0.04/0.20+labs[1]*0.12/0.20+labs[2]*0.04/0.20; // proporcional a 20%
+  const nota=0.1*k+0.2*labScore+0.7*f;
+  const msg=f<2.5?"⚠️ No alcanza la nota mínima (25%) en el examen final.":"";
+  proc_res.textContent=`Nota Procesos de Fabricación: ${nota.toFixed(2)} ${msg}`;
+}
+
+window.onload=()=>{document.querySelectorAll('input').forEach(i=>cargar(i.id));autoGuardar();}
+</script>
+</body>
+</html>
